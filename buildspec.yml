@@ -17,4 +17,4 @@ phases:
     commands:
       # Copy the content of build folder into website s3 bucket
       - aws s3 sync build/ s3://buildingblocks-testing-cloudfront/build/
-      - aws cloudfront create-invalidation --distribution-id d1b356vdskxz08.cloudfront.net --paths /*
+      - aws cloudfront create-invalidation --distribution-id ETEULNJLZL8GU --paths "/*"  

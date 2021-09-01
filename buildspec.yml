@@ -1,21 +1,20 @@
-version: 0.1
+version: 0.2
 phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      # Install dependencies needed
+      - npm install
+
+      # Upgrade AWS CLI to the latest version
+      - pip install --upgrade awscli
   pre_build:
     commands:
-      - echo Installing source NPM dependencies...
-      - npm install
+      # Build the react app to give an optimized production build
+      - npm run build
   build:
     commands:
-      - echo Build started on `date`
-      - npm run build
-      
-  post_build:
-    commands:
-      - aws s3 cp --recursive --acl public-read ./build s3://buildingblocks-testing-cloudfront/
-      - aws s3 cp --acl public-read --cache-control="max-age=0, no-cache, no-store, must-revalidate" ./build/index.html s3://buildingblocks-testing-cloudfront/
-      - aws cloudfront create-invalidation --distribution-id d1b356vdskxz08.cloudfront.net --paths /index.html /service-worker.js
-
-artifacts:
-  files:
-    - '**/*'
-  base-directory: build
+      # Copy the content of build folder into website s3 bucket
+      - aws s3 sync build/ s3://buildingblocks-testing-cloudfront/build/
+      - aws cloudfront create-invalidation --distribution-id d1b356vdskxz08.cloudfront.net --paths /*

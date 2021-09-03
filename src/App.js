@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Yup. Its working using Git and good in dev.
+          Yup. Its working using Git and good in dev using new Artifact.
         </p>
         <a
           className="App-link"
